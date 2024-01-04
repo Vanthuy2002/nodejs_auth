@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server"
+    "dev": "nodemon ./server.js"
   },
   "author": "Dave Gray",
   "license": "ISC",
@@ -13,7 +13,9 @@
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "date-fns": "^2.23.0",
+    "dotenv": "^16.3.1",
     "express": "^4.17.1",
+    "mongoose": "^8.0.3",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
