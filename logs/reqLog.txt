@@ -9,3 +9,8 @@
 20240103	20:14:41	070cb7be-38e5-4aad-af3c-0813af692561	GET	undefined	/
 20240103	20:14:42	f397b34b-19c8-4029-b868-dd3b13d5b663	GET	undefined	/css/style.css
 20240103	20:15:32	c2736dec-1b5a-48f4-959a-e2fa02611249	GET	undefined	/employees
+20240104	15:35:49	8b586ec8-1a15-455d-a3db-c764fa96cf8e	POST	undefined	/register
+20240104	15:36:26	205c2a46-fdb8-4017-97fc-4a28832475ce	POST	undefined	/register
+20240104	15:37:24	274de7c0-306b-4900-97ce-e76509f0bd5b	POST	undefined	/register
+20240104	15:38:02	4b2a73eb-7bf8-420f-b1fb-7dfe65eb4bdb	POST	undefined	/register
+20240104	15:55:23	b2e643de-d83c-4aab-9092-3eaee1d507ee	POST	undefined	/register
