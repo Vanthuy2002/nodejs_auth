@@ -4,7 +4,9 @@ class AuthController {
     const data = await login(req.body)
     res.cookie('tokens', data.refresh_token, {
       httpOnly: true,
-      maxAge: 24 * 3600 * 1000
+      maxAge: 24 * 3600 * 1000,
+      sameSite: 'None',
+      secure: true
     })
     res.status(data.status).json({ ...data })
   }

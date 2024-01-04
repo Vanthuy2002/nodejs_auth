@@ -1,14 +1,17 @@
 const cors = require('cors')
-const corsOptions = require('./corsOptions')
+const { corsOptions } = require('./corsOptions')
 const { logger } = require('../middleware/logEvents')
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
+const credentialOptions = require('../middleware/credentials')
 
 const globalAppConFig = (app) => {
   // custom middleware logger
   app.use(logger)
 
+  // credentials
+  app.use(credentialOptions)
   // Cross Origin Resource Sharing
   app.use(cors(corsOptions))
 
