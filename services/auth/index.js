@@ -1,6 +1,9 @@
 const bcrypt = require('bcrypt')
-const { responseClient } = require('../../utils')
+const { responseClient, generateTokens } = require('../../utils')
 const User = require('../../model/users')
+const envListConfig = require('../../config/envConfig')
+
+const { REFRESH_TOKEN_EXPIRED } = envListConfig
 
 const register = async (body) => {
   const { email, pwd } = body
@@ -58,8 +61,20 @@ const login = async (body) => {
       message: 'Email or password not correct'
     })
   }
+  const payload = { email: user.email }
   // matched , create tokens
-  return responseClient({ status: 200, message: 'Login successful' })
+  const [access_token, refresh_token] = await Promise.all([
+    generateTokens(payload),
+    generateTokens(payload, REFRESH_TOKEN_EXPIRED)
+  ])
+  // save refresh_tokens in db
+  await User.findByIdAndUpdate(user._id, { refresh_token })
+  return responseClient({
+    status: 200,
+    message: 'Login successful',
+    access_token,
+    refresh_token
+  })
 }
 
 module.exports = { register, login }
