@@ -31,8 +31,13 @@ class PostController {
   }
 
   //   for test and development
-  async insertManyPost() {
+  async insertManyPost(req, res) {
     const data = await postServices.insertData()
+    res.status(data.status).json(data)
+  }
+
+  async deleteMany(req, res) {
+    const data = await postServices.deleteAll()
     res.status(data.status).json(data)
   }
 }

@@ -15,4 +15,9 @@ postRoutes
   .patch(checkValidToken, postCtrl.updatePost)
   .delete(checkValidToken, postCtrl.deletePost)
 
+postRoutes
+  .route('/many')
+  .post(postCtrl.insertManyPost)
+  .delete(postCtrl.deleteMany)
+
 module.exports = postRoutes

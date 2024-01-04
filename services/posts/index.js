@@ -68,9 +68,9 @@ class PostServices {
     const document = {
       title: faker.lorem.sentence(6),
       content: faker.lorem.paragraphs(5),
-      author: faker.person.fullName,
-      like: faker.number.int(),
-      comment: faker.number.int()
+      author: faker.person.fullName(),
+      like: faker.number.int(1000),
+      comment: faker.number.int(1000)
     }
     const payload = []
     for (let i = 0; i < 100; i++) {
@@ -82,6 +82,11 @@ class PostServices {
       message: 'Insert data for development ok',
       status: 200
     })
+  }
+
+  async deleteAll() {
+    await Posts.deleteMany({})
+    return responseClient({ message: 'Delete all posts', status: 200 })
   }
 }
 
