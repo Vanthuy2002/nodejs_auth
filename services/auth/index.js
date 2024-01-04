@@ -20,7 +20,9 @@ const register = async (body) => {
 
   try {
     const hashedPwd = await bcrypt.hash(pwd, 10)
-    const newUser = { email: email, password: hashedPwd }
+    const username = email.split('@')[0]
+
+    const newUser = { username, email, password: hashedPwd }
     // save in db
     await User.create(newUser)
 
@@ -33,4 +35,31 @@ const register = async (body) => {
   }
 }
 
-module.exports = { register }
+const login = async (body) => {
+  const { email, password } = body
+  if (!email || !password)
+    return responseClient({
+      status: 400,
+      message: 'Email or password was required'
+    })
+  // found user in DB
+  const user = await User.findOne({ email })
+  if (!user)
+    return responseClient({
+      status: 403,
+      message: 'Email or password not correct'
+    })
+  // evaluate password
+  const matched = await bcrypt.compare(password, user.password)
+  // check matched password
+  if (!matched) {
+    return responseClient({
+      status: 403,
+      message: 'Email or password not correct'
+    })
+  }
+  // matched , create tokens
+  return responseClient({ status: 200, message: 'Login successful' })
+}
+
+module.exports = { register, login }
