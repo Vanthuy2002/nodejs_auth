@@ -1,5 +1,5 @@
 const { verifyToken } = require('../utils')
-const checkToken = async (req, res, next) => {
+const checkValidToken = async (req, res, next) => {
   const tokens = req.headers['authorization'].split(' ')[1]
   if (!tokens)
     return res.status(401).json({ message: 'You are not login', status: 401 })
@@ -7,3 +7,5 @@ const checkToken = async (req, res, next) => {
   req.currentUser = decoded.email
   next()
 }
+
+module.exports = checkValidToken
