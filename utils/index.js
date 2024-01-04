@@ -8,7 +8,6 @@ const responseClient = (param) => {
 }
 
 const generateTokens = async (payload, expiresIn = TOKEN_EXPIRED) => {
-  debugger
   return new Promise((resolve, reject) => {
     jwt.sign(payload, TOKEN_SECRET, { expiresIn }, (err, token) => {
       if (err) return reject(err.message)

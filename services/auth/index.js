@@ -76,5 +76,26 @@ const login = async (body) => {
     refresh_token
   })
 }
+const logOut = async (cookies) => {
+  // delete access_token in client
+  if (!cookies?.tokens)
+    return responseClient({ message: 'Not found cookies', status: 403 })
 
-module.exports = { register, login }
+  const refresh_token = cookies.tokens
+  // is refresh_token has in DB??
+  const user = await User.findOne({ refresh_token })
+  if (!user) {
+    // not found user -> must be clear cookie
+    // res.clearCookie('tokens', {httpOnly : true})
+    return responseClient({
+      message: 'Not found user',
+      status: 404
+    })
+  }
+
+  // delete refresh_token in db
+  await User.findByIdAndUpdate(user._id, { $unset: { refresh_token: 1 } })
+  return responseClient({ message: 'Logout successful', status: 200 })
+}
+
+module.exports = { register, login, logOut }

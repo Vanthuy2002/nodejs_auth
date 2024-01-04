@@ -1,4 +1,4 @@
-const { login } = require('../services/auth')
+const { login, logOut } = require('../services/auth')
 class AuthController {
   async handleLogin(req, res) {
     const data = await login(req.body)
@@ -7,6 +7,15 @@ class AuthController {
       maxAge: 24 * 3600 * 1000
     })
     res.status(data.status).json({ ...data })
+  }
+
+  async handleLogOut(req, res) {
+    const cookies = req.cookies
+    const data = await logOut(cookies)
+    if (data.status === 404 || data.status === 200) {
+      res.clearCookie('tokens', { httpOnly: true })
+    }
+    res.status(data.status).json(data)
   }
 }
 
