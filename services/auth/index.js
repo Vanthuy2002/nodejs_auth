@@ -6,7 +6,7 @@ const envListConfig = require('../../config/envConfig')
 const { REFRESH_TOKEN_EXPIRED } = envListConfig
 
 const register = async (body) => {
-  const { email, pwd } = body
+  const { email, pwd, ...rest } = body
   if (!email || !pwd)
     return responseClient({
       status: 400,
@@ -25,7 +25,7 @@ const register = async (body) => {
     const hashedPwd = await bcrypt.hash(pwd, 10)
     const username = email.split('@')[0]
 
-    const newUser = { username, email, password: hashedPwd }
+    const newUser = { username, email, password: hashedPwd, ...rest }
     // save in db
     await User.create(newUser)
 
@@ -61,7 +61,7 @@ const login = async (body) => {
       message: 'Email or password not correct'
     })
   }
-  const payload = { email: user.email }
+  const payload = { email: user.email, roles: user.roles }
   // matched , create tokens
   const [access_token, refresh_token] = await Promise.all([
     generateTokens(payload),

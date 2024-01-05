@@ -13,7 +13,7 @@ class TokenServices {
     // decoded token, if ok -> create new access_token
     try {
       const decoded = await verifyToken(refresh_token)
-      const payload = { email: decoded.email }
+      const payload = { email: decoded.email, roles: decoded.roles }
       const access_token = await generateTokens(payload)
       return { status: 201, access_token }
     } catch (err) {
