@@ -7,7 +7,6 @@ COPY . .
 RUN apk add python3
 RUN npm install pm2 -g
 RUN npm install
-RUN npm start
 
 EXPOSE 3500
 
