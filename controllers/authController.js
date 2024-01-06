@@ -8,7 +8,11 @@ class AuthController {
       sameSite: 'None',
       secure: true
     })
-    res.status(data.status).json({ ...data })
+    res.status(data.status).json({
+		message : data.message, 
+		status: data.status, 
+		access_token : data.access_token
+	})
   }
 
   async handleLogOut(req, res) {
