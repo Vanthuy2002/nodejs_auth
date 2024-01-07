@@ -10,7 +10,7 @@ class UserServices {
 			status : 404
 		})
 		
-		return reponseClient({
+		return responseClient({
 			message : "Get me successful",
 			status : 200,
 			user
