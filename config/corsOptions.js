@@ -1,5 +1,5 @@
 const whitelist = [
-  'https://www.yoursite.com',
+  'https://react-auth-azure-mu.vercel.app',
   'http://localhost:5173',
   'http://localhost:3500'
 ]
