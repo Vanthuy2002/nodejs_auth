@@ -19,7 +19,7 @@ class AuthController {
     const cookies = req.cookies
     const data = await logOut(cookies)
     if (data.status === 404 || data.status === 200) {
-      res.clearCookie('tokens', { httpOnly: true })
+      res.clearCookie('tokens', { httpOnly: true , path : "/", secure : true, sameSite : "None"})
     }
     res.status(data.status).json(data)
   }
