@@ -16,9 +16,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Build production assets
-      run: npm run build
-
     - name: Deploy to server
       run: |
         sh ubuntu@47.128.214.124 'cd /node-app && git pull origin main && npm install && pm2 restart app'
