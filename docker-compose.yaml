@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  nodejs_app:
+    image: vanthuy/nodejs_auth
+    container_name: nodejs_auth_container
+    ports:
+      - "3500:3500"
+    restart: always
