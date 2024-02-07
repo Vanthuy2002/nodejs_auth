@@ -21,4 +21,4 @@ jobs:
 
     - name: Deploy to server
       run: |
-        ssh -i ubuntu@47.128.214.124 ssh_key 'cd /node-app && git pull origin main && npm install && pm2 restart app'
+        ssh -i ubuntu@47.128.214.124 "C:\\Users\\vanth\\keys\\Lightsail.pem" 'cd node-app && git pull origin main && npm install && pm2 restart app'
