@@ -1,49 +1,38 @@
-name: Docker Image CI
+name: Docker Image CI/CD
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-
-  build:
-
+  build_and_deploy:
     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Create env file
-      run : echo "${{ secrets.AUTH_ENV }}" > .env
-    - name: Build the Docker image
-      run: docker build --progress=plain -t vanthuy/nodejs_auth .
-    - name: Login to Docker Hub
-      run : docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
-    - name: Push to docker hub
-      run: docker push vanthuy/nodejs_auth
-
-  deploy:
-    runs-on: ubuntu-latest
-    
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
-    - name: Pull Docker image
-      run: docker pull vanthuy/nodejs_auth
+    - name: Create env file
+      run: echo "${{ secrets.AUTH_ENV }}" > .env
 
-    - name: Stop and remove existing container
-      run: |
-        ssh ubuntu@47.128.214.124 'docker stop nodejs_auth_container || true'
-        ssh ubuntu@47.128.214.124 'docker rm nodejs_auth_container || true'
+    - name: Build the Docker image
+      run: docker build --progress=plain -t vanthuy/nodejs_auth .
 
+    - name: Login to Docker Hub
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Run Docker container
-      run: |
-        echo "$SSH_PRIVATE_KEY" > ssh_key
-        chmod 600 ssh_key
-        scp -i ssh_key docker-compose.yml ubuntu@47.128.214.124:/node-app
-        ssh -i ssh_key ubuntu@47.128.214.124 'cd /node-app && docker-compose up -d'
+    - name: Push to Docker Hub
+      run: docker push vanthuy/nodejs_auth
 
-
+    - name: SSH into deployment server and deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.DEPLOY_PORT }}
+        script: |
+          docker pull vanthuy/nodejs_auth
+          docker stop nodejs_auth_container || true
+          docker rm nodejs_auth_container || true
+          docker-compose -f /path/to/docker-compose.yml up -d
