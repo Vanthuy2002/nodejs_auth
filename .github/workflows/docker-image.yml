@@ -28,9 +28,9 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.DEPLOY_HOST }}
-        username: ${{ secrets.DEPLOY_USERNAME }}
+        username: ${{ secrets.DELOY_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.DELOY_PORT }}
+        port: ${{ secrets.DEPLOY_PORT }}
         script: |
           docker pull vanthuy/nodejs_auth
           docker stop nodejs_auth_container || true
