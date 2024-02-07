@@ -35,4 +35,4 @@ jobs:
           docker pull vanthuy/nodejs_auth
           docker stop nodejs_auth_container || true
           docker rm nodejs_auth_container || true
-          docker-compose -f /path/to/docker-compose.yml up -d
+          docker-compose -f /node-app/docker-compose.yml up -d
