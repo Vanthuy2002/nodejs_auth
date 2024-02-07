@@ -1,38 +1,24 @@
-name: Docker Image CI/CD
+name: Node.js Server Deployment
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build_and_deploy:
+  deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Create env file
-      run: echo "${{ secrets.AUTH_ENV }}" > .env
+    - name: Install dependencies
+      run: npm install
 
-    - name: Build the Docker image
-      run: docker build --progress=plain -t vanthuy/nodejs_auth .
+    - name: Build production assets
+      run: npm run build
 
-    - name: Login to Docker Hub
-      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Push to Docker Hub
-      run: docker push vanthuy/nodejs_auth
-
-    - name: SSH into deployment server and deploy
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.DEPLOY_HOST }}
-        username: ${{ secrets.DELOY_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.DEPLOY_PORT }}
-        script: |
-          docker pull vanthuy/nodejs_auth
-          docker stop nodejs_auth_container || true
-          docker rm nodejs_auth_container || true
-          docker-compose -f /node-app/docker-compose.yml up -d
+    - name: Deploy to server
+      run: |
+        sh ubuntu@47.128.214.124 'cd /node-app && git pull origin main && npm install && pm2 restart app'
