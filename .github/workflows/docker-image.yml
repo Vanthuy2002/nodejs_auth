@@ -22,3 +22,24 @@ jobs:
       run : docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
     - name: Push to docker hub
       run: docker push vanthuy/nodejs_auth
+
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Pull Docker image
+      run: docker pull vanthuy/nodejs_auth
+
+    - name: Stop and remove existing container
+      run: |
+        ssh ubuntu@47.128.214.124 'docker stop nodejs_auth_container || true'
+        ssh ubuntu@47.128.214.124 'docker rm nodejs_auth_container || true'
+
+
+    - name: Run Docker container
+      run: |
+        ssh ubuntu@47.128.214.124 'docker run -d --name nodejs_auth_container -p 3500:3500 vanthuy/nodejs_auth'
+
