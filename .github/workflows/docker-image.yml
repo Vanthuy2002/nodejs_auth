@@ -30,7 +30,7 @@ jobs:
         host: ${{ secrets.DEPLOY_HOST }}
         username: ${{ secrets.DEPLOY_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.DEPLOY_PORT }}
+        port: ${{ secrets.DELOY_PORT }}
         script: |
           docker pull vanthuy/nodejs_auth
           docker stop nodejs_auth_container || true
