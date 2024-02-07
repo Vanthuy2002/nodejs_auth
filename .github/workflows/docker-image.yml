@@ -41,5 +41,9 @@ jobs:
 
     - name: Run Docker container
       run: |
-        ssh ubuntu@47.128.214.124 'docker run -d --name nodejs_auth_container -p 3500:3500 vanthuy/nodejs_auth'
+        echo "$SSH_PRIVATE_KEY" > ssh_key
+        chmod 600 ssh_key
+        scp -i ssh_key docker-compose.yml ubuntu@47.128.214.124:/node-app
+        ssh -i ssh_key ubuntu@47.128.214.124 'cd /node-app && docker-compose up -d'
+
 
